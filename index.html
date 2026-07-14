@@ -1,0 +1,307 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yo, I'll Solve It</title>
+  <meta name="description" content="Drop your question. Get the answer you need and the one everyone's thinking. No filters." />
+  <link rel="preload" href="/fonts/Canela-Regular.otf" as="font" type="font/otf" />
+  <link rel="preload" href="/fonts/Canela-Bold.otf" as="font" type="font/otf" />
+  <link rel="preload" href="/fonts/Sohne-400.otf" as="font" type="font/otf" />
+  <link rel="preload" href="/fonts/Sohne-500.otf" as="font" type="font/otf" />
+  <link rel="preload" href="/fonts/Sohne-600.otf" as="font" type="font/otf" />
+  <style>
+    @font-face { font-family: 'Canela'; src: url('/fonts/Canela-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('/fonts/Canela-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Sohne'; src: url('/fonts/Sohne-400.otf') format('opentype'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Sohne'; src: url('/fonts/Sohne-500.otf') format('opentype'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Sohne'; src: url('/fonts/Sohne-600.otf') format('opentype'); font-weight: 600; font-display: swap; }
+
+    :root {
+      --color-primary:    #F5A623;
+      --color-secondary:  #2A2A2A;
+      --color-accent:     #E8003D;
+      --color-background: #0D0D0D;
+      --color-text:       #F2F2F2;
+      --color-border:     rgba(242, 242, 242, 0.12);
+      --color-muted:      rgba(242, 242, 242, 0.6);
+      --color-surface:    rgba(232, 0, 61, 0.08);
+      --radius-base:      0px;
+      --font-display:     'Canela';
+      --font-body:        'Sohne';
+    }
+  </style>
+  <style id="brand-css">
+    body {
+      background-image: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(242, 242, 242, 0.03) 2px, rgba(242, 242, 242, 0.03) 4px);
+      background-attachment: fixed;
+    }
+    
+    .hero-headline {
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+    }
+    
+    .section-heading {
+      font-weight: 900;
+    }
+    
+    .service-item {
+      border-width: 2px;
+    }
+    
+    .service-item:first-child {
+      border-top-width: 2px;
+    }
+    
+    nav {
+      border-bottom-width: 2px;
+    }
+    
+    footer {
+      border-top-width: 2px;
+    }
+  </style>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: var(--color-background); color: var(--color-text);
+      font-size: 17px; line-height: 1.65;
+    }
+
+    /* ── Nav ─────────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--color-background);
+      border-bottom: 1px solid var(--color-border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 64px; height: 64px;
+      transition: box-shadow 0.25s ease;
+    }
+    nav:hover, nav:focus-within {
+      box-shadow: 0 2px 16px var(--color-border);
+    }
+    nav.scrolled {
+      box-shadow: 0 2px 16px var(--color-border);
+    }
+    .nav-logo {
+      font-family: var(--font-display), serif; font-size: 20px;
+      color: var(--color-primary); text-decoration: none;
+    }
+    .nav-cta {
+      font-size: 14px; font-weight: 600; color: var(--color-primary);
+      text-decoration: none; border-bottom: 2px solid var(--color-accent);
+      padding-bottom: 2px; transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-cta:hover { color: var(--color-accent); border-color: var(--color-primary); }
+
+    /* ── Hero ────────────────────────────────────────────────────────────── */
+    .hero {
+      max-width: 860px; margin: 0 auto;
+      padding: 100px 64px 80px;
+    }
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--color-accent);
+      margin-bottom: 24px;
+    }
+    .hero-headline {
+      font-family: var(--font-display), serif;
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 400; line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--color-primary);
+      margin-bottom: 28px;
+    }
+    .hero-subheadline {
+      font-size: 19px; line-height: 1.65;
+      color: var(--color-muted); max-width: 580px; margin-bottom: 40px;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: var(--color-primary); color: var(--color-background);
+      padding: 14px 30px; border-radius: var(--radius-base);
+      font-weight: 600; font-size: 15px; text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .hero-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── Divider ─────────────────────────────────────────────────────────── */
+    .divider {
+      border: none; border-top: 1px solid var(--color-border);
+      margin: 0 64px;
+    }
+
+    /* ── Sections ────────────────────────────────────────────────────────── */
+    section { padding: 80px 64px; max-width: 860px; margin: 0 auto; }
+    .section-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--color-accent); margin-bottom: 16px;
+    }
+    .section-heading {
+      font-family: var(--font-display), serif;
+      font-size: clamp(28px, 3vw, 40px); font-weight: 400;
+      line-height: 1.15; letter-spacing: -0.02em;
+      color: var(--color-primary); margin-bottom: 20px;
+    }
+    .section-body { font-size: 17px; line-height: 1.75; color: var(--color-muted); }
+
+    /* ── Services ────────────────────────────────────────────────────────── */
+    .services-list { margin-top: 48px; }
+    .service-item {
+      display: grid; grid-template-columns: 1fr 3fr;
+      gap: 32px; padding: 32px 0;
+      border-bottom: 1px solid var(--color-border);
+      transition: background 0.2s;
+    }
+    .service-item:first-child { border-top: 1px solid var(--color-border); }
+    .service-item:hover, .service-item.hovered { background: var(--color-surface); }
+    .service-name {
+      font-family: var(--font-body), sans-serif; font-size: 15px;
+      font-weight: 600; color: var(--color-primary); padding-top: 3px;
+    }
+    .service-desc { font-size: 16px; line-height: 1.65; color: var(--color-muted); }
+    .service-price { font-size: 13px; font-weight: 600; color: var(--color-accent); margin-top: 6px; }
+
+    /* ── Contact band ────────────────────────────────────────────────────── */
+    .contact-band {
+      background: var(--color-primary); padding: 80px 64px;
+    }
+    .contact-band .section-heading { color: var(--color-background); }
+    .contact-band .section-body { color: rgba(255,255,255,0.7); margin-bottom: 36px; }
+    .contact-band-cta {
+      display: inline-block;
+      background: var(--color-accent); color: var(--color-primary);
+      padding: 14px 30px; border-radius: var(--radius-base);
+      font-weight: 600; font-size: 15px; text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .contact-band-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+    .contact-band-inner { max-width: 860px; margin: 0 auto; }
+    .contact-cta-secondary {
+      display: inline-block;
+      color: var(--color-background);
+      padding: 14px 30px; border-radius: var(--radius-base);
+      font-weight: 600; font-size: 15px; text-decoration: none;
+      border: 2px solid var(--color-background);
+      margin-left: 12px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .contact-cta-secondary:hover {
+      background: var(--color-background);
+      color: var(--color-primary);
+    }
+
+    /* ── Footer ──────────────────────────────────────────────────────────── */
+    footer {
+      background: var(--color-background);
+      border-top: 1px solid var(--color-border);
+      padding: 28px 64px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-brand { font-family: var(--font-display), serif; font-size: 15px; color: var(--color-muted); }
+    .footer-powered { font-size: 12px; color: var(--color-muted); opacity: 0.6; }
+    .footer-powered a { color: var(--color-muted); text-decoration: none; }
+
+    /* ── Entrance animations (CSS-only, no JS required) ───────────────────── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero { animation: fadeInUp 0.55s ease forwards; }
+    section:nth-of-type(1) { animation: fadeInUp 0.55s 0.1s ease both; }
+    section:nth-of-type(2) { animation: fadeInUp 0.55s 0.2s ease both; }
+    section:nth-of-type(3) { animation: fadeInUp 0.55s 0.3s ease both; }
+    /* Legacy JS class (no-op if script is stripped) */
+    section.visible, .hero.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive: 768px ───────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .hero { padding: 56px 24px 48px; }
+      .divider { margin: 0 24px; }
+      section { padding: 56px 24px; }
+      .service-item { grid-template-columns: 1fr; gap: 8px; }
+      .contact-band { padding: 56px 24px; }
+      footer { padding: 24px 24px; flex-direction: column; gap: 10px; text-align: center; }
+    }
+
+    /* ── Responsive: 480px ───────────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      nav { padding: 0 20px; }
+      .hero { padding: 40px 20px; }
+      .hero-headline { font-size: clamp(32px, 8vw, 40px); }
+      .hero-subheadline { font-size: 16px; }
+      .divider { margin: 0 20px; }
+      section { padding: 48px 20px; }
+      .section-heading { font-size: clamp(22px, 6vw, 32px); }
+      .service-item { grid-template-columns: 1fr; gap: 6px; }
+      .contact-band { padding: 48px 20px; }
+      footer { padding: 20px 20px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="#">Yo, I'll Solve It</a>
+    <a class="nav-cta" href="#contact">Ask Your Question</a>
+  </nav>
+
+  <div class="hero">
+    <p class="hero-eyebrow">YO, I'LL SOLVE IT</p>
+    <h1 class="hero-headline">Two Answers. One You Need, One We're All Thinking.</h1>
+    <p class="hero-subheadline">Drop your question. Get the answer you need and the one everyone's thinking. No filters.</p>
+    <a class="hero-cta" href="#contact">Ask Your Question</a>
+  </div>
+
+  <hr class="divider" />
+
+  <section id="about">
+    <p class="section-label">WHY THIS EXISTS</p>
+    <h2 class="section-heading">Answers plus laughs. That's it.</h2>
+    <p class="section-body">I wanted to create a tool that could solve most things, but brought humor into the fold. People are bored and tired of being on the internet, but when they are, they want to be entertained. They want the answer, but also who does not want a little laugh? Yo, I will Solve It gives you the right answer and the "what I am thinking" answer, creating an environment where people get answers, a chuckle, and share experiences to make someone day better.</p>
+  </section>
+
+  <hr class="divider" />
+
+  <section id="services">
+    <p class="section-label">WHAT YOU GET</p>
+    <h2 class="section-heading">Drop it. We got it.</h2>
+    <div class="services-list">
+      <div class="service-item">
+        <div class="service-name">Ask the LLM</div>
+        <div class="service-desc">Get two answers to any problem: the helpful solution and the brutally honest response that says what we are all thinking.</div>
+      </div>
+      <div class="service-item">
+        <div class="service-name">Featured Questions</div>
+        <div class="service-desc">Browse the funniest, most entertaining questions and answers from the community. See what others are asking and share the laughs.</div>
+      </div>
+      <div class="service-item">
+        <div class="service-name">Share with Friends</div>
+        <div class="service-desc">Found something hilarious or helpful? Share it instantly with your crew and spread the entertainment.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="contact-band" id="contact">
+    <div class="contact-band-inner">
+      <p class="section-label">DROP YOUR QUESTION</p>
+      <h2 class="section-heading">Got something? We got answers.</h2>
+      <p class="section-body">Tech issues. Relationship advice. Random thoughts at 2am. Whatever you need, drop it here and get the real answer plus the one that makes you laugh.</p>
+      <a class="contact-band-cta" href="mailto:heather@creativeagntcy.com">Ask Your Question</a>
+      <a class="contact-cta-secondary" href="#">See Featured Questions</a>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-brand">Yo, I'll Solve It</span>
+    <span class="footer-powered">Built with <a href="https://vibe2live.ai" target="_blank" rel="noopener">Vibe to Live</a></span>
+  </footer>
+
+  
+</body>
+</html>
