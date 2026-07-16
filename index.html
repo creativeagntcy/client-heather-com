@@ -1,307 +1,1295 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yo, I'll Solve It</title>
-  <meta name="description" content="Drop your question. Get the answer you need and the one everyone's thinking. No filters." />
-  <link rel="preload" href="/fonts/Canela-Regular.otf" as="font" type="font/otf" />
-  <link rel="preload" href="/fonts/Canela-Bold.otf" as="font" type="font/otf" />
-  <link rel="preload" href="/fonts/Sohne-400.otf" as="font" type="font/otf" />
-  <link rel="preload" href="/fonts/Sohne-500.otf" as="font" type="font/otf" />
-  <link rel="preload" href="/fonts/Sohne-600.otf" as="font" type="font/otf" />
-  <style>
-    @font-face { font-family: 'Canela'; src: url('/fonts/Canela-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
-    @font-face { font-family: 'Canela'; src: url('/fonts/Canela-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
-    @font-face { font-family: 'Sohne'; src: url('/fonts/Sohne-400.otf') format('opentype'); font-weight: 400; font-display: swap; }
-    @font-face { font-family: 'Sohne'; src: url('/fonts/Sohne-500.otf') format('opentype'); font-weight: 500; font-display: swap; }
-    @font-face { font-family: 'Sohne'; src: url('/fonts/Sohne-600.otf') format('opentype'); font-weight: 600; font-display: swap; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yo, I'll Solve It — Answers. Plus what we're actually thinking.</title>
+<meta name="description" content="Ask anything. Get the real answer. And the one we probably shouldn't say out loud.">
+<style>
+/* ============================================================
+   DESIGN TOKENS — WARM DARK (DEFAULT)
+   ============================================================ */
+:root {
+  --color-background: #0C0907;
+  --color-text:       #F0E6CC;
+  --color-primary:    #F0E6CC;
+  --color-secondary:  #1C1510;
+  --color-accent:     #E8451C;
+  --color-accent-2:   #F5C430;
+  --color-muted:      rgba(240,230,204,0.55);
+  --color-border:     rgba(240,230,204,0.12);
+  --color-surface:    rgba(240,230,204,0.06);
+  --color-accent-glow: rgba(232,69,28,0.18);
+  --nav-height: 68px;
+}
 
-    :root {
-      --color-primary:    #F5A623;
-      --color-secondary:  #2A2A2A;
-      --color-accent:     #E8003D;
-      --color-background: #0D0D0D;
-      --color-text:       #F2F2F2;
-      --color-border:     rgba(242, 242, 242, 0.12);
-      --color-muted:      rgba(242, 242, 242, 0.6);
-      --color-surface:    rgba(232, 0, 61, 0.08);
-      --radius-base:      0px;
-      --font-display:     'Canela';
-      --font-body:        'Sohne';
-    }
-  </style>
-  <style id="brand-css">
-    body {
-      background-image: 
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(242, 242, 242, 0.03) 2px, rgba(242, 242, 242, 0.03) 4px);
-      background-attachment: fixed;
-    }
-    
-    .hero-headline {
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: -0.03em;
-    }
-    
-    .section-heading {
-      font-weight: 900;
-    }
-    
-    .service-item {
-      border-width: 2px;
-    }
-    
-    .service-item:first-child {
-      border-top-width: 2px;
-    }
-    
-    nav {
-      border-bottom-width: 2px;
-    }
-    
-    footer {
-      border-top-width: 2px;
-    }
-  </style>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-      background: var(--color-background); color: var(--color-text);
-      font-size: 17px; line-height: 1.65;
-    }
+/* ============================================================
+   RESET + BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── Nav ─────────────────────────────────────────────────────────────── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: var(--color-background);
-      border-bottom: 1px solid var(--color-border);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 64px; height: 64px;
-      transition: box-shadow 0.25s ease;
-    }
-    nav:hover, nav:focus-within {
-      box-shadow: 0 2px 16px var(--color-border);
-    }
-    nav.scrolled {
-      box-shadow: 0 2px 16px var(--color-border);
-    }
-    .nav-logo {
-      font-family: var(--font-display), serif; font-size: 20px;
-      color: var(--color-primary); text-decoration: none;
-    }
-    .nav-cta {
-      font-size: 14px; font-weight: 600; color: var(--color-primary);
-      text-decoration: none; border-bottom: 2px solid var(--color-accent);
-      padding-bottom: 2px; transition: color 0.2s, border-color 0.2s;
-    }
-    .nav-cta:hover { color: var(--color-accent); border-color: var(--color-primary); }
+html { scroll-behavior: smooth; font-size: 16px; }
 
-    /* ── Hero ────────────────────────────────────────────────────────────── */
-    .hero {
-      max-width: 860px; margin: 0 auto;
-      padding: 100px 64px 80px;
-    }
-    .hero-eyebrow {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--color-accent);
-      margin-bottom: 24px;
-    }
-    .hero-headline {
-      font-family: var(--font-display), serif;
-      font-size: clamp(40px, 6vw, 72px);
-      font-weight: 400; line-height: 1.05;
-      letter-spacing: -0.03em;
-      color: var(--color-primary);
-      margin-bottom: 28px;
-    }
-    .hero-subheadline {
-      font-size: 19px; line-height: 1.65;
-      color: var(--color-muted); max-width: 580px; margin-bottom: 40px;
-    }
-    .hero-cta {
-      display: inline-block;
-      background: var(--color-primary); color: var(--color-background);
-      padding: 14px 30px; border-radius: var(--radius-base);
-      font-weight: 600; font-size: 15px; text-decoration: none;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .hero-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
 
-    /* ── Divider ─────────────────────────────────────────────────────────── */
-    .divider {
-      border: none; border-top: 1px solid var(--color-border);
-      margin: 0 64px;
-    }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
 
-    /* ── Sections ────────────────────────────────────────────────────────── */
-    section { padding: 80px 64px; max-width: 860px; margin: 0 auto; }
-    .section-label {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--color-accent); margin-bottom: 16px;
-    }
-    .section-heading {
-      font-family: var(--font-display), serif;
-      font-size: clamp(28px, 3vw, 40px); font-weight: 400;
-      line-height: 1.15; letter-spacing: -0.02em;
-      color: var(--color-primary); margin-bottom: 20px;
-    }
-    .section-body { font-size: 17px; line-height: 1.75; color: var(--color-muted); }
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  background: rgba(12,9,7,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+}
 
-    /* ── Services ────────────────────────────────────────────────────────── */
-    .services-list { margin-top: 48px; }
-    .service-item {
-      display: grid; grid-template-columns: 1fr 3fr;
-      gap: 32px; padding: 32px 0;
-      border-bottom: 1px solid var(--color-border);
-      transition: background 0.2s;
-    }
-    .service-item:first-child { border-top: 1px solid var(--color-border); }
-    .service-item:hover, .service-item.hovered { background: var(--color-surface); }
-    .service-name {
-      font-family: var(--font-body), sans-serif; font-size: 15px;
-      font-weight: 600; color: var(--color-primary); padding-top: 3px;
-    }
-    .service-desc { font-size: 16px; line-height: 1.65; color: var(--color-muted); }
-    .service-price { font-size: 13px; font-weight: 600; color: var(--color-accent); margin-top: 6px; }
+.nav-inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
 
-    /* ── Contact band ────────────────────────────────────────────────────── */
-    .contact-band {
-      background: var(--color-primary); padding: 80px 64px;
-    }
-    .contact-band .section-heading { color: var(--color-background); }
-    .contact-band .section-body { color: rgba(255,255,255,0.7); margin-bottom: 36px; }
-    .contact-band-cta {
-      display: inline-block;
-      background: var(--color-accent); color: var(--color-primary);
-      padding: 14px 30px; border-radius: var(--radius-base);
-      font-weight: 600; font-size: 15px; text-decoration: none;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .contact-band-cta:hover { opacity: 0.88; transform: translateY(-1px); }
-    .contact-band-inner { max-width: 860px; margin: 0 auto; }
-    .contact-cta-secondary {
-      display: inline-block;
-      color: var(--color-background);
-      padding: 14px 30px; border-radius: var(--radius-base);
-      font-weight: 600; font-size: 15px; text-decoration: none;
-      border: 2px solid var(--color-background);
-      margin-left: 12px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .contact-cta-secondary:hover {
-      background: var(--color-background);
-      color: var(--color-primary);
-    }
+.nav-wordmark {
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  white-space: nowrap;
+}
 
-    /* ── Footer ──────────────────────────────────────────────────────────── */
-    footer {
-      background: var(--color-background);
-      border-top: 1px solid var(--color-border);
-      padding: 28px 64px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .footer-brand { font-family: var(--font-display), serif; font-size: 15px; color: var(--color-muted); }
-    .footer-powered { font-size: 12px; color: var(--color-muted); opacity: 0.6; }
-    .footer-powered a { color: var(--color-muted); text-decoration: none; }
+.nav-wordmark span {
+  color: var(--color-accent);
+}
 
-    /* ── Entrance animations (CSS-only, no JS required) ───────────────────── */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .hero { animation: fadeInUp 0.55s ease forwards; }
-    section:nth-of-type(1) { animation: fadeInUp 0.55s 0.1s ease both; }
-    section:nth-of-type(2) { animation: fadeInUp 0.55s 0.2s ease both; }
-    section:nth-of-type(3) { animation: fadeInUp 0.55s 0.3s ease both; }
-    /* Legacy JS class (no-op if script is stripped) */
-    section.visible, .hero.visible { opacity: 1; transform: translateY(0); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
 
-    /* ── Responsive: 768px ───────────────────────────────────────────────── */
-    @media (max-width: 768px) {
-      nav { padding: 0 24px; }
-      .hero { padding: 56px 24px 48px; }
-      .divider { margin: 0 24px; }
-      section { padding: 56px 24px; }
-      .service-item { grid-template-columns: 1fr; gap: 8px; }
-      .contact-band { padding: 56px 24px; }
-      footer { padding: 24px 24px; flex-direction: column; gap: 10px; text-align: center; }
-    }
+.nav-links a {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--color-text); }
 
-    /* ── Responsive: 480px ───────────────────────────────────────────────── */
-    @media (max-width: 480px) {
-      nav { padding: 0 20px; }
-      .hero { padding: 40px 20px; }
-      .hero-headline { font-size: clamp(32px, 8vw, 40px); }
-      .hero-subheadline { font-size: 16px; }
-      .divider { margin: 0 20px; }
-      section { padding: 48px 20px; }
-      .section-heading { font-size: clamp(22px, 6vw, 32px); }
-      .service-item { grid-template-columns: 1fr; gap: 6px; }
-      .contact-band { padding: 48px 20px; }
-      footer { padding: 20px 20px; flex-direction: column; gap: 8px; text-align: center; }
-    }
-  </style>
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+}
+.nav-cta:hover { background: #d03a14; transform: translateY(-1px); }
+
+.nav-mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column;
+  gap: 5px;
+}
+.nav-mobile-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--color-text);
+  transition: 0.2s;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  min-height: calc(100vh - var(--nav-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 32px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative record rings — background */
+.hero::before {
+  content: '';
+  position: absolute;
+  right: -180px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 680px;
+  height: 680px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  right: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  border: 1px solid rgba(232,69,28,0.15);
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(232,69,28,0.12);
+  border: 1px solid rgba(232,69,28,0.3);
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 32px;
+}
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.hero-headline {
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  max-width: 820px;
+  margin-bottom: 24px;
+}
+
+.hero-headline em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+.hero-subhead {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--color-muted);
+  max-width: 560px;
+  margin-bottom: 52px;
+  line-height: 1.7;
+}
+
+/* LLM Interface Mock */
+.llm-interface {
+  background: var(--color-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 820px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px var(--color-border);
+  position: relative;
+}
+
+.llm-interface::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, rgba(232,69,28,0.2) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.llm-window-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 20px;
+}
+.llm-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+.llm-dot:nth-child(1) { background: #E8451C; }
+.llm-dot:nth-child(2) { background: #F5C430; }
+.llm-dot:nth-child(3) { background: rgba(240,230,204,0.2); }
+
+.llm-question-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 8px;
+}
+
+.llm-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  margin-bottom: 24px;
+}
+
+.llm-input {
+  flex: 1;
+  padding: 14px 18px;
+  background: rgba(240,230,204,0.07);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.llm-input:focus { border-color: rgba(232,69,28,0.5); }
+
+.llm-submit {
+  padding: 14px 22px;
+  background: var(--color-accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+  align-self: flex-start;
+}
+.llm-submit:hover { background: #d03a14; }
+
+.llm-answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.answer-card {
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.answer-card-real {
+  background: rgba(240,230,204,0.05);
+  border: 1px solid var(--color-border);
+}
+
+.answer-card-thinking {
+  background: rgba(232,69,28,0.08);
+  border: 1px solid rgba(232,69,28,0.25);
+}
+
+.answer-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+}
+.answer-card-real .answer-label { color: var(--color-muted); }
+.answer-card-thinking .answer-label { color: var(--color-accent); }
+
+.answer-text {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.answer-card-thinking .answer-text {
+  font-style: italic;
+}
+
+/* ============================================================
+   MARQUEE STRIP
+   ============================================================ */
+.marquee-strip {
+  padding: 18px 0;
+  background: var(--color-accent);
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 0;
+  animation: marquee-scroll 28s linear infinite;
+  width: max-content;
+}
+
+.marquee-track-2 {
+  animation: marquee-scroll 28s linear infinite;
+  animation-delay: -14s;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+  padding: 0 20px;
+}
+
+.marquee-item::after {
+  content: '•';
+  opacity: 0.5;
+}
+
+/* ============================================================
+   HOW IT WORKS
+   ============================================================ */
+.how-it-works {
+  padding: 120px 32px;
+  background: var(--color-secondary);
+}
+
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 16px;
+}
+
+.section-heading {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.section-sub {
+  font-size: 1.05rem;
+  color: var(--color-muted);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 64px;
+}
+
+.hiw-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.hiw-col-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hiw-col-real .hiw-col-label { color: var(--color-muted); }
+.hiw-col-thinking .hiw-col-label { color: var(--color-accent); }
+
+.hiw-col-desc {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.hiw-card {
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.hiw-card-real {
+  background: rgba(240,230,204,0.05);
+  border: 1px solid var(--color-border);
+}
+
+.hiw-card-thinking {
+  background: rgba(232,69,28,0.08);
+  border: 1px solid rgba(232,69,28,0.25);
+}
+
+.hiw-q {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 10px;
+}
+
+.hiw-q strong {
+  color: var(--color-accent-2);
+}
+
+.hiw-a {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--color-text);
+}
+
+.hiw-card-thinking .hiw-a {
+  font-style: italic;
+}
+
+/* ============================================================
+   THE VIBE
+   ============================================================ */
+.the-vibe {
+  padding: 120px 32px;
+  background: var(--color-background);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Record rings decoration */
+@keyframes centerPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+  50%       { transform: translate(-50%, -50%) scale(1.18); opacity: 0.75; }
+}
+@keyframes centerPulseFast {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+  50%       { transform: translate(-50%, -50%) scale(1.28); opacity: 0.65; }
+}
+@keyframes ringRipple {
+  0%   { transform: translate(-50%, -50%) scale(1);    opacity: 1; }
+  40%  { transform: translate(-50%, -50%) scale(1.06); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(1);    opacity: 1; }
+}
+
+.vibe-rings {
+  position: absolute;
+  right: -120px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: default;
+}
+
+.vibe-ring {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: border-color 0.4s ease, opacity 0.4s ease;
+}
+
+.vibe-ring-1 {
+  width: 520px;
+  height: 520px;
+  border: 1.5px solid var(--color-border);
+}
+.vibe-ring-2 {
+  width: 380px;
+  height: 380px;
+  border: 1.5px solid rgba(232,69,28,0.12);
+}
+.vibe-ring-3 {
+  width: 240px;
+  height: 240px;
+  border: 2px solid rgba(245,196,48,0.15);
+}
+.vibe-ring-center {
+  width: 80px;
+  height: 80px;
+  background: rgba(232,69,28,0.15);
+  border: 2px solid rgba(232,69,28,0.4);
+  animation: centerPulse 2.4s ease-in-out infinite;
+}
+
+/* Hover: beat spreads outward */
+.vibe-rings:hover .vibe-ring-center {
+  animation: centerPulseFast 0.7s ease-in-out infinite;
+  background: rgba(232,69,28,0.28);
+  border-color: rgba(232,69,28,0.75);
+}
+.vibe-rings:hover .vibe-ring-3 {
+  animation: ringRipple 0.7s ease-in-out 0.12s infinite;
+  border-color: rgba(245,196,48,0.45);
+}
+.vibe-rings:hover .vibe-ring-2 {
+  animation: ringRipple 0.7s ease-in-out 0.26s infinite;
+  border-color: rgba(232,69,28,0.35);
+}
+.vibe-rings:hover .vibe-ring-1 {
+  animation: ringRipple 0.7s ease-in-out 0.42s infinite;
+  border-color: rgba(240,230,204,0.25);
+}
+
+.vibe-inner {
+  max-width: 680px;
+  position: relative;
+  z-index: 1;
+}
+
+.vibe-heading {
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 40px;
+}
+
+.vibe-heading em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+.vibe-text {
+  font-size: 1.05rem;
+  color: var(--color-muted);
+  line-height: 1.8;
+  margin-bottom: 22px;
+}
+
+.vibe-text:last-of-type { margin-bottom: 0; }
+
+/* ============================================================
+   SHARE CTA
+   ============================================================ */
+.share-cta {
+  padding: 100px 32px;
+  background: var(--color-secondary);
+  text-align: center;
+}
+
+.share-heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 40px;
+}
+
+.share-heading em {
+  font-style: normal;
+  color: var(--color-accent-2);
+}
+
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.share-btn:hover {
+  border-color: var(--color-accent);
+  background: rgba(232,69,28,0.08);
+  color: var(--color-accent);
+}
+
+.share-subtext {
+  font-size: 0.88rem;
+  color: var(--color-muted);
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.7;
+  font-style: italic;
+}
+
+/* ============================================================
+   EMAIL SIGNUP
+   ============================================================ */
+.email-signup {
+  padding: 100px 32px;
+  background: var(--color-accent);
+  position: relative;
+  overflow: hidden;
+}
+
+.email-signup::before {
+  content: '';
+  position: absolute;
+  right: -200px;
+  top: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  pointer-events: none;
+}
+
+.email-signup-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.email-heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+.email-subhead {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+.email-form {
+  display: flex;
+  gap: 10px;
+  max-width: 460px;
+  margin: 0 auto 16px;
+}
+
+.email-input {
+  flex: 1;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.email-input::placeholder { color: rgba(255,255,255,0.5); }
+.email-input:focus {
+  border-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.2);
+}
+
+.email-submit {
+  padding: 14px 22px;
+  background: #fff;
+  color: var(--color-accent);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+}
+.email-submit:hover { background: rgba(255,255,255,0.9); transform: translateY(-1px); }
+
+.email-fine-print {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.55);
+  font-style: italic;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  padding: 60px 32px 40px;
+  background: var(--color-background);
+  border-top: 1px solid var(--color-border);
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.footer-brand-wordmark {
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.footer-brand-wordmark span { color: var(--color-accent); }
+
+.footer-tagline {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  max-width: 260px;
+  line-height: 1.6;
+}
+
+.footer-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+.footer-links a {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--color-text); }
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-domain {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  letter-spacing: 0.04em;
+}
+
+.footer-credit {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+.footer-credit a {
+  color: var(--color-accent-2);
+  font-weight: 600;
+}
+.footer-credit a:hover { text-decoration: underline; }
+
+/* ============================================================
+   PALETTE SWITCHER
+   ============================================================ */
+#vtl-palette-switcher {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+#vtl-palette-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-text);
+  color: var(--color-background);
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  transition: transform 0.2s;
+}
+#vtl-palette-btn:hover { transform: scale(1.1); }
+
+#vtl-palette-panel {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  bottom: 54px;
+  right: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  padding: 8px 0;
+  min-width: 220px;
+  overflow: hidden;
+}
+#vtl-palette-panel.open { display: flex; }
+
+.vtl-palette-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888;
+  padding: 8px 14px 6px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 4px;
+}
+
+.vtl-palette-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.vtl-palette-row:hover { background: rgba(0,0,0,0.04); }
+.vtl-palette-row.active { background: rgba(0,0,0,0.07); }
+
+.vtl-swatch-group { display: flex; gap: 4px; }
+.vtl-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.vtl-palette-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #222;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .llm-answers { grid-template-columns: 1fr; }
+  .hiw-split { grid-template-columns: 1fr; }
+  .hero::before, .hero::after { display: none; }
+  .vibe-rings { display: none; }
+}
+
+@media (max-width: 680px) {
+  .nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .nav-mobile-toggle { display: flex; }
+
+  .hero { padding: 60px 20px 48px; }
+  .how-it-works, .the-vibe, .share-cta, .email-signup { padding: 72px 20px; }
+
+  .email-form { flex-direction: column; }
+  .email-submit { width: 100%; }
+
+  .footer-inner { flex-direction: column; }
+  .footer-links { flex-wrap: wrap; gap: 16px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+
+  .llm-interface { padding: 20px; }
+  .llm-input-row { flex-direction: column; }
+  .llm-submit { width: 100%; }
+}
+
+/* Nav open state */
+.nav-links.nav-open {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  background: rgba(12,9,7,0.98);
+  padding: 24px 20px;
+  gap: 20px;
+  border-bottom: 1px solid var(--color-border);
+  z-index: 99;
+}
+</style>
 </head>
 <body>
 
-  <nav>
-    <a class="nav-logo" href="#">Yo, I'll Solve It</a>
-    <a class="nav-cta" href="#contact">Ask Your Question</a>
-  </nav>
-
-  <div class="hero">
-    <p class="hero-eyebrow">YO, I'LL SOLVE IT</p>
-    <h1 class="hero-headline">Two Answers. One You Need, One We're All Thinking.</h1>
-    <p class="hero-subheadline">Drop your question. Get the answer you need and the one everyone's thinking. No filters.</p>
-    <a class="hero-cta" href="#contact">Ask Your Question</a>
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="test-yo-ill-solve-it-home.html" class="nav-wordmark">
+      <span>YO,</span> I'LL SOLVE IT
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#ask">Ask</a></li>
+      <li><a href="test-yo-ill-solve-it-about.html">About</a></li>
+      <li><a href="#share">Share</a></li>
+    </ul>
+    <a href="#ask" data-vtl-href="nav-cta-url" class="nav-cta"><!--VTL:nav-cta-label-->Start solving &rarr;<!--/VTL:nav-cta-label--></a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+</nav>
 
-  <hr class="divider" />
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="ask">
+  <div class="hero-inner">
+    <div class="hero-badge"><!--VTL:hero-badge-->Live Beta<!--/VTL:hero-badge--></div>
+    <h1 class="hero-headline"><!--VTL:hero-headline-->Answers.<br><em>Plus what we're<br>actually thinking.</em><!--/VTL:hero-headline--></h1>
+    <p class="hero-subhead"><!--VTL:hero-subhead-->Ask anything. Get the real answer. And the one we probably shouldn't say out loud.<!--/VTL:hero-subhead--></p>
 
-  <section id="about">
-    <p class="section-label">WHY THIS EXISTS</p>
-    <h2 class="section-heading">Answers plus laughs. That's it.</h2>
-    <p class="section-body">I wanted to create a tool that could solve most things, but brought humor into the fold. People are bored and tired of being on the internet, but when they are, they want to be entertained. They want the answer, but also who does not want a little laugh? Yo, I will Solve It gives you the right answer and the "what I am thinking" answer, creating an environment where people get answers, a chuckle, and share experiences to make someone day better.</p>
-  </section>
-
-  <hr class="divider" />
-
-  <section id="services">
-    <p class="section-label">WHAT YOU GET</p>
-    <h2 class="section-heading">Drop it. We got it.</h2>
-    <div class="services-list">
-      <div class="service-item">
-        <div class="service-name">Ask the LLM</div>
-        <div class="service-desc">Get two answers to any problem: the helpful solution and the brutally honest response that says what we are all thinking.</div>
+    <!-- LLM Interface Mock -->
+    <div class="llm-interface">
+      <div class="llm-window-bar">
+        <div class="llm-dot"></div>
+        <div class="llm-dot"></div>
+        <div class="llm-dot"></div>
       </div>
-      <div class="service-item">
-        <div class="service-name">Featured Questions</div>
-        <div class="service-desc">Browse the funniest, most entertaining questions and answers from the community. See what others are asking and share the laughs.</div>
+      <div class="llm-question-label">Your question</div>
+      <div class="llm-input-row">
+        <textarea class="llm-input" rows="2" id="hero-input">Why does my code work on my machine but not in production?</textarea>
+        <button class="llm-submit" onclick="triggerSolve()">Solve it &rarr;</button>
       </div>
-      <div class="service-item">
-        <div class="service-name">Share with Friends</div>
-        <div class="service-desc">Found something hilarious or helpful? Share it instantly with your crew and spread the entertainment.</div>
+      <div class="llm-answers">
+        <div class="answer-card answer-card-real">
+          <span class="answer-label">The Answer</span>
+          <p class="answer-text">Environment inconsistencies -- dependency versions, environment variables, or OS differences between your local setup and production.</p>
+        </div>
+        <div class="answer-card answer-card-thinking">
+          <span class="answer-label">What We're Thinking</span>
+          <p class="answer-text">Because your machine is lying to you. It's been lying to you this whole time. Production is just honest.</p>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <div class="contact-band" id="contact">
-    <div class="contact-band-inner">
-      <p class="section-label">DROP YOUR QUESTION</p>
-      <h2 class="section-heading">Got something? We got answers.</h2>
-      <p class="section-body">Tech issues. Relationship advice. Random thoughts at 2am. Whatever you need, drop it here and get the real answer plus the one that makes you laugh.</p>
-      <a class="contact-band-cta" href="mailto:heather@creativeagntcy.com">Ask Your Question</a>
-      <a class="contact-cta-secondary" href="#">See Featured Questions</a>
+<!-- ============================================================
+     MARQUEE STRIP
+     ============================================================ -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Should I text them back?</span>
+    <span class="marquee-item">Why is my coworker like that?</span>
+    <span class="marquee-item">Is this rash serious?</span>
+    <span class="marquee-item">Am I the problem?</span>
+    <span class="marquee-item">How do I explain blockchain to my mom?</span>
+    <span class="marquee-item">Did I make a mistake?</span>
+    <span class="marquee-item">Why does coffee help AND not help?</span>
+    <span class="marquee-item">Should I text them back?</span>
+    <span class="marquee-item">Why is my coworker like that?</span>
+    <span class="marquee-item">Is this rash serious?</span>
+    <span class="marquee-item">Am I the problem?</span>
+    <span class="marquee-item">How do I explain blockchain to my mom?</span>
+    <span class="marquee-item">Did I make a mistake?</span>
+    <span class="marquee-item">Why does coffee help AND not help?</span>
+  </div>
+</div>
+
+<!-- ============================================================
+     HOW IT WORKS
+     ============================================================ -->
+<section class="how-it-works">
+  <div class="section-inner">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="section-heading"><!--VTL:hiw-heading-->Two answers.<br>One is polished.<br>One is real.<!--/VTL:hiw-heading--></h2>
+    <p class="section-sub"><!--VTL:hiw-sub-->Every question gets the answer you need -- and the answer everyone's actually thinking.<!--/VTL:hiw-sub--></p>
+
+    <div class="hiw-split">
+      <div class="hiw-col hiw-col-real">
+        <div class="hiw-col-label"><!--VTL:hiw-real-label-->The Answer<!--/VTL:hiw-real-label--></div>
+        <p class="hiw-col-desc"><!--VTL:hiw-real-desc-->What you'd get from any other AI. Informed. Accurate. Useful. The kind of answer you can quote in a meeting.<!--/VTL:hiw-real-desc--></p>
+        <div class="hiw-card hiw-card-real">
+          <div class="hiw-q"><strong>Q:</strong> Should I quit my job?</div>
+          <p class="hiw-a">Evaluate financial runway, your next opportunity, and timing relative to vesting schedules before making any moves.</p>
+        </div>
+      </div>
+      <div class="hiw-col hiw-col-thinking">
+        <div class="hiw-col-label"><!--VTL:hiw-thinking-label-->What We're Thinking<!--/VTL:hiw-thinking-label--></div>
+        <p class="hiw-col-desc"><!--VTL:hiw-thinking-desc-->What's actually true. Funny. Unfiltered. The thing nobody else will say out loud -- but everybody's already thinking.<!--/VTL:hiw-thinking-desc--></p>
+        <div class="hiw-card hiw-card-thinking">
+          <div class="hiw-q"><strong>Q:</strong> Should I quit my job?</div>
+          <p class="hiw-a">Yes. But maybe wait until Monday.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     THE VIBE
+     ============================================================ -->
+<section class="the-vibe">
+  <!-- Record rings decoration -->
+  <div class="vibe-rings">
+    <div style="position:relative;width:520px;height:520px;">
+      <div class="vibe-ring vibe-ring-1"></div>
+      <div class="vibe-ring vibe-ring-2"></div>
+      <div class="vibe-ring vibe-ring-3"></div>
+      <div class="vibe-ring vibe-ring-center"></div>
     </div>
   </div>
 
-  <footer>
-    <span class="footer-brand">Yo, I'll Solve It</span>
-    <span class="footer-powered">Built with <a href="https://vibe2live.ai" target="_blank" rel="noopener">Vibe to Live</a></span>
-  </footer>
+  <div class="section-inner">
+    <div class="vibe-inner">
+      <h2 class="vibe-heading"><!--VTL:vibe-heading-->We're not<br>like the <em>others.</em><!--/VTL:vibe-heading--></h2>
+      <p class="vibe-text"><!--VTL:vibe-text-1-->The internet is exhausting. Forty-seven AI tools, all of them serious, all of them helpful, none of them fun to talk to. We built something different. Something that actually sounds like a person -- a smart one who's been around, knows the score, and isn't going to pretend the obvious thing isn't obvious.<!--/VTL:vibe-text-1--></p>
+      <p class="vibe-text"><!--VTL:vibe-text-2-->Think of us like that record store that's been on the corner for twenty years. You walk in, you get good music, you get a straight answer, and you leave feeling like you found something worth coming back for. That's the energy. That's the whole thing.<!--/VTL:vibe-text-2--></p>
+      <p class="vibe-text"><!--VTL:vibe-text-3-->We give you the real answer. We give you the honest one. And sometimes -- on a good day -- they're the same answer.<!--/VTL:vibe-text-3--></p>
+    </div>
+  </div>
+</section>
 
-  
+<!-- ============================================================
+     SHARE CTA
+     ============================================================ -->
+<section class="share-cta" id="share">
+  <div class="section-inner">
+    <h2 class="share-heading"><!--VTL:share-heading-->Found something good?<br><em>Pass it along.</em><!--/VTL:share-heading--></h2>
+    <div class="share-buttons">
+      <button class="share-btn" onclick="copyLink(this)">
+        <span>&#128203;</span> Copy Link
+      </button>
+      <a class="share-btn" href="https://twitter.com/intent/tweet?text=yo+you+have+to+check+this+out&url=https://yoillsolveit.com" target="_blank" rel="noopener">
+        <span>&#120143;</span> Tweet This
+      </a>
+      <a class="share-btn" href="sms:?body=you+have+to+check+out+yoillsolveit.com" target="_blank" rel="noopener">
+        <span>&#128172;</span> Text a Friend
+      </a>
+    </div>
+    <p class="share-subtext"><!--VTL:share-subtext-->The best things on the internet spread because someone said "you have to see this."<!--/VTL:share-subtext--></p>
+  </div>
+</section>
+
+<!-- ============================================================
+     EMAIL SIGNUP
+     ============================================================ -->
+<section class="email-signup">
+  <div class="email-signup-inner">
+    <h2 class="email-heading"><!--VTL:email-heading-->Problems. Jokes. Delivered.<!--/VTL:email-heading--></h2>
+    <p class="email-subhead"><!--VTL:email-subhead-->Stories from the internet, solved with humor. No spam. No corporate nonsense.<!--/VTL:email-subhead--></p>
+    <form class="email-form" onsubmit="handleSignup(event)">
+      <input type="email" class="email-input" placeholder="your@email.com" required>
+      <button type="submit" class="email-submit">I'm in</button>
+    </form>
+    <p class="email-fine-print"><!--VTL:email-fine-print-->We'll never sell your email. We're not like that.<!--/VTL:email-fine-print--></p>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-brand-wordmark"><span>YO,</span> I'LL SOLVE IT</div>
+      <p class="footer-tagline"><!--VTL:footer-tagline-->The answer you need. Plus the one you actually wanted.<!--/VTL:footer-tagline--></p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#ask">Ask</a></li>
+      <li><a href="test-yo-ill-solve-it-about.html">About</a></li>
+      <li><a href="#share">Share</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-domain">yoillsolveit.com</span>
+    <span class="footer-credit">Built with <a href="https://vibe2live.ai" target="_blank" rel="noopener">Vibe to Live</a></span>
+  </div>
+</footer>
+
+<!-- ============================================================
+     PALETTE SWITCHER
+     ============================================================ -->
+<div id="vtl-palette-switcher">
+  <div id="vtl-palette-panel">
+    <div class="vtl-palette-label">Color Theme</div>
+  </div>
+  <button id="vtl-palette-btn" onclick="togglePalette()" title="Switch theme">&#9681;</button>
+</div>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script>
+// Mobile nav
+document.getElementById('nav-toggle').addEventListener('click', function() {
+  const links = document.getElementById('nav-links');
+  links.classList.toggle('nav-open');
+});
+
+// Solve it demo
+function triggerSolve() {
+  const input = document.getElementById('hero-input');
+  const val = input.value.trim();
+  if (!val) return;
+  // Demo: just a small flash effect
+  const cards = document.querySelectorAll('.answer-card');
+  cards.forEach(c => {
+    c.style.opacity = '0.4';
+    c.style.transition = 'opacity 0.2s';
+  });
+  setTimeout(() => {
+    cards.forEach(c => { c.style.opacity = '1'; });
+  }, 400);
+}
+
+// Copy link
+function copyLink(btn) {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span>&#10003;</span> Copied!';
+    setTimeout(() => { btn.innerHTML = orig; }, 2000);
+  });
+}
+
+// Email signup
+function handleSignup(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.email-submit');
+  btn.textContent = "You're in.";
+  btn.style.background = '#fff';
+  e.target.querySelector('.email-input').value = '';
+}
+
+// Palette switcher
+const palettes = [
+  {
+    name: "Warm Dark",
+    swatches: ["#0C0907","#E8451C","#F5C430"],
+    vars: {
+      "--color-background":"#0C0907","--color-text":"#F0E6CC","--color-primary":"#F0E6CC",
+      "--color-secondary":"#1C1510","--color-accent":"#E8451C","--color-accent-2":"#F5C430",
+      "--color-muted":"rgba(240,230,204,0.55)","--color-border":"rgba(240,230,204,0.12)",
+      "--color-surface":"rgba(240,230,204,0.06)","--color-accent-glow":"rgba(232,69,28,0.18)"
+    }
+  },
+  {
+    name: "Vinyl Black",
+    swatches: ["#000000","#CC1F1F","#FFFFFF"],
+    vars: {
+      "--color-background":"#000000","--color-text":"#FFFFFF","--color-primary":"#FFFFFF",
+      "--color-secondary":"#0D0D0D","--color-accent":"#CC1F1F","--color-accent-2":"#FF4444",
+      "--color-muted":"rgba(255,255,255,0.5)","--color-border":"rgba(255,255,255,0.1)",
+      "--color-surface":"rgba(255,255,255,0.04)","--color-accent-glow":"rgba(204,31,31,0.2)"
+    }
+  },
+  {
+    name: "Gold Record",
+    swatches: ["#2A1A08","#D4A017","#F5E6C8"],
+    vars: {
+      "--color-background":"#2A1A08","--color-text":"#F5E6C8","--color-primary":"#F5E6C8",
+      "--color-secondary":"#3A2510","--color-accent":"#D4A017","--color-accent-2":"#F0C040",
+      "--color-muted":"rgba(245,230,200,0.55)","--color-border":"rgba(245,230,200,0.12)",
+      "--color-surface":"rgba(245,230,200,0.06)","--color-accent-glow":"rgba(212,160,23,0.18)"
+    }
+  },
+  {
+    name: "Neon Flip",
+    swatches: ["#060A08","#00FF87","#F0E6CC"],
+    vars: {
+      "--color-background":"#060A08","--color-text":"#F0E6CC","--color-primary":"#F0E6CC",
+      "--color-secondary":"#0C140E","--color-accent":"#00FF87","--color-accent-2":"#7DFFB3",
+      "--color-muted":"rgba(240,230,204,0.55)","--color-border":"rgba(0,255,135,0.15)",
+      "--color-surface":"rgba(0,255,135,0.05)","--color-accent-glow":"rgba(0,255,135,0.15)"
+    }
+  }
+];
+
+function togglePalette() {
+  const panel = document.getElementById('vtl-palette-panel');
+  panel.classList.toggle('open');
+}
+
+function applyPalette(idx) {
+  const p = palettes[idx];
+  const root = document.documentElement;
+  Object.entries(p.vars).forEach(([k,v]) => root.style.setProperty(k,v));
+  document.querySelectorAll('.vtl-palette-row').forEach((r,i) => {
+    r.classList.toggle('active', i === idx);
+  });
+}
+
+const panel = document.getElementById('vtl-palette-panel');
+palettes.forEach((p, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'vtl-palette-row' + (i === 0 ? ' active' : '');
+  btn.innerHTML = `<div class="vtl-swatch-group">${p.swatches.map(c => `<span class="vtl-swatch" style="background:${c}"></span>`).join('')}</div><span class="vtl-palette-name">${p.name}</span>`;
+  btn.addEventListener('click', () => { applyPalette(i); });
+  panel.appendChild(btn);
+});
+
+document.addEventListener('click', e => {
+  if (!document.getElementById('vtl-palette-switcher').contains(e.target)) {
+    document.getElementById('vtl-palette-panel').classList.remove('open');
+  }
+});
+</script>
 </body>
 </html>
